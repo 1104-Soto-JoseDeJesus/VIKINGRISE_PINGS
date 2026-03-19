@@ -2,8 +2,11 @@ name: 52-Hour Discord Ping
 
 on:
   schedule:
-    - cron: '0 * * * *' # Runs every hour to check the timer
-  workflow_dispatch: # Allows you to trigger it manually for testing
+    - cron: '0 * * * *' # Checks every hour
+  workflow_dispatch: # Allows manual testing
+
+permissions:
+  contents: write # Grants permission to update last_ping.txt
 
 jobs:
   check-and-ping:
@@ -13,9 +16,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.x'
+          python-version: '3.10'
 
       - name: Install dependencies
         run: pip install requests
@@ -26,10 +29,11 @@ jobs:
           ROLE_ID: ${{ secrets.ROLE_ID }}
         run: python check_time.py
 
-      - name: Commit updated timestamp
+      - name: Commit and Push changes
         run: |
-          git config --global user.name 'Github Action'
-          git config --global user.email 'action@github.com'
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add last_ping.txt
-          git commit -m "Update last ping timestamp" || exit 0
+          # The '|| true' ensures the workflow doesn't fail if there's nothing to update
+          git commit -m "Update last ping timestamp" || true
           git push
