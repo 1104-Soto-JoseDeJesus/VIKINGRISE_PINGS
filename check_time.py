@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 
 # Configuration
 INTERVAL_HOURS = 52
-WARNING_LEAD_MINUTES = 10
+WARNING_LEAD_MINUTES = 1
 STATE_FILE = "last_ping.txt"
 WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK")
 ROLE_ID = os.getenv("ROLE_ID")
