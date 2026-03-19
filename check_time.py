@@ -21,7 +21,7 @@ def should_ping():
 
 if should_ping():
     # Send Discord Ping
-    payload = {"content": f"<@&{ROLE_ID}> The event is starting!"}
+    payload = {"content": f"<@&{BOLD}> The event is starting!"}
     requests.post(WEBHOOK_URL, json=payload)
     
     # Update timestamp
