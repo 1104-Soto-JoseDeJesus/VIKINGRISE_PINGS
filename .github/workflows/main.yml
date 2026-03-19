@@ -1,0 +1,35 @@
+name: 52-Hour Discord Ping
+
+on:
+  schedule:
+    - cron: '0 * * * *' # Runs every hour to check the timer
+  workflow_dispatch: # Allows you to trigger it manually for testing
+
+jobs:
+  check-and-ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run check script
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          ROLE_ID: ${{ secrets.ROLE_ID }}
+        run: python check_time.py
+
+      - name: Commit updated timestamp
+        run: |
+          git config --global user.name 'Github Action'
+          git config --global user.email 'action@github.com'
+          git add last_ping.txt
+          git commit -m "Update last ping timestamp" || exit 0
+          git push
