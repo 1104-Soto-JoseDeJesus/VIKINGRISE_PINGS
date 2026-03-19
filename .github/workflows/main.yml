@@ -1,12 +1,12 @@
-name: 52-Hour Discord Ping
+name: 52-Hour Dual Ping
 
 on:
   schedule:
-    - cron: '0 * * * *' # Checks every hour
-  workflow_dispatch: # Allows manual testing
+    - cron: '*/10 * * * *' # Runs every 10 minutes
+  workflow_dispatch:
 
 permissions:
-  contents: write # Grants permission to update last_ping.txt
+  contents: write
 
 jobs:
   check-and-ping:
@@ -23,17 +23,16 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
-      - name: Run check script
+      - name: Run dual-check script
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
           ROLE_ID: ${{ secrets.ROLE_ID }}
         run: python check_time.py
 
-      - name: Commit and Push changes
+      - name: Commit and Push
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add last_ping.txt
-          # The '|| true' ensures the workflow doesn't fail if there's nothing to update
-          git commit -m "Update last ping timestamp" || true
+          git commit -m "Update rotation state" || true
           git push
