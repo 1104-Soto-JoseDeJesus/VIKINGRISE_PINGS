@@ -50,13 +50,13 @@ if __name__ == "__main__":
 
     # 1. Check for Warning Ping
     if now >= next_warning_dt and state['warning'] <= state['main']:
-        send_ping("⚠️ **10 MINUTE WARNING:** The event starts shortly!", "Upcoming Event", 16776960) # Yellow
+        send_ping("⚠️ **WARNING:** Killing Fields Starting Soon!", "Upcoming Event", 16776960) # Yellow
         save_state(now.timestamp(), state['main'])
         print("Warning ping sent.")
 
     # 2. Check for Main Ping
     elif now >= next_main_dt:
-        send_ping("⚔️ **EVENT STARTING NOW:** Good luck!", "Event Active", 15158332) # Red
+        send_ping("⚔️ **Killing Fields Starting Now:**", "Event Active", 15158332) # Red
         save_state(state['warning'], now.timestamp())
         print("Main ping sent.")
     
