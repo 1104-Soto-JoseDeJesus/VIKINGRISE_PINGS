@@ -2,7 +2,7 @@ name: 52-Hour Dual Ping
 
 on:
   schedule:
-    - cron: '*/10 * * * *' # Runs every 10 minutes
+    - cron: '*/1 * * * *' # Runs every 10 minutes
   workflow_dispatch:
 
 permissions:
